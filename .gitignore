@@ -2,10 +2,43 @@
 .venv/
 venv/
 env/
+vibe/
 
-# Environment variables
+# Environment variables — never commit secrets
 .env
+.env.*
+*.env
+secrets.toml
+.streamlit/secrets.toml
 
 # Python cache
 __pycache__/
 *.py[cod]
+*.pyo
+*.pyd
+
+# Jupyter
+.ipynb_checkpoints/
+*.ipynb
+
+# Scratch / log files generated during the workshop
+git_add.txt
+git_commit.txt
+git_push.txt
+git_status.txt
+sklearn_check.txt
+step1_output.txt
+step2_output.txt
+step3_output.txt
+step4_output.txt
+step4_output2.txt
+step4_result.txt
+step5_result.txt
+step6_result.txt
+
+# OS / editor noise
+.DS_Store
+Thumbs.db
+*.swp
+.vscode/
+.idea/
