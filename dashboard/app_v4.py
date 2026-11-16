@@ -65,7 +65,15 @@ _ENV = _read_env()
 _DB_URL_RAW   = _ENV.get("DATABASE_URL", "")
 _DB_URL       = re.sub(r"[&?]channel_binding=require", "", _DB_URL_RAW)
 _OPENAI_KEY   = _ENV.get("OPENAI_API_KEY", "")
-_OPENAI_MODEL = _ENV.get("OPENAI_MODEL", "gpt-4o-mini")
+_OPENAI_MODEL = _ENV.get("OPENAI_MODEL", "gpt-4o")
+
+# Fail fast with a readable message if secrets are not configured
+if not _DB_URL_RAW:
+    st.error("DATABASE_URL is not set. Add it to .env (local) or Streamlit secrets (cloud).")
+    st.stop()
+if not _OPENAI_KEY:
+    st.error("OPENAI_API_KEY is not set. Add it to .env (local) or Streamlit secrets (cloud).")
+    st.stop()
 
 # ── Neon connection ───────────────────────────────────────────────────────────
 _HOST    = re.match(r"postgresql://[^@]+@([^/?]+)", _DB_URL).group(1)
