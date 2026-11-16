@@ -45,16 +45,20 @@ _MODEL_PATH = os.path.join(_HERE, "..", "models", "gbr_model.joblib")
 _FEAT_PATH  = os.path.join(_HERE, "..", "models", "feature_order.json")
 _ENV_PATH   = os.path.join(_HERE, "..", ".env")
 
-# ── Load .env values ──────────────────────────────────────────────────────────
+# ── Load config: .env locally, st.secrets on Streamlit Cloud ─────────────────
 def _read_env() -> dict:
-    vals = {}
-    with open(_ENV_PATH) as f:
-        for line in f:
-            line = line.strip()
-            if line and not line.startswith("#") and "=" in line:
-                k, v = line.split("=", 1)
-                vals[k.strip()] = v.strip().strip('"').strip("'")
-    return vals
+    # Prefer .env when it exists (local development)
+    if os.path.exists(_ENV_PATH):
+        vals = {}
+        with open(_ENV_PATH) as f:
+            for line in f:
+                line = line.strip()
+                if line and not line.startswith("#") and "=" in line:
+                    k, v = line.split("=", 1)
+                    vals[k.strip()] = v.strip().strip('"').strip("'")
+        return vals
+    # Fall back to Streamlit secrets (Streamlit Cloud deployment)
+    return {k: str(v) for k, v in st.secrets.items()}
 
 _ENV = _read_env()
 
